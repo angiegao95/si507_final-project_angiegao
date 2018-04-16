@@ -150,10 +150,10 @@ def search_nearby_parkings(event):
     baseurl = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?'
     params = {'location':'{},{}'.format(lat,lon),'type':'parking','rankby':'distance','limit':5,'key':google_places_key}
     parking_json = make_request_using_cache_json(MAP_DICTION, CACHE_GOOGLEMAP, baseurl, params=params)
-    nearby_parkings = parking_json['results']
+    nearby_parkings = parking_json['results'][:5]
 
     parking_ls = []
-    for p in nearby_parkings[:5]:
+    for p in nearby_parkings:
         name = p['name']
         location = p['geometry']['location']
         address = p['vicinity']
@@ -266,7 +266,7 @@ def run_event_search():
                     print('*' * len(boundary))
                     print('')
                     i = 1
-                    boudary = '*******  {}: TOP 10 NEAREST PARKING LOTS *******'.format(target_event.name)
+                    boundary = '*******  {}: TOP 5 NEAREST PARKING LOTS *******'.format(target_event.name)
                     print(boundary)
                     for p in parking_ls:
                         print('{}.'.format(i),p)
