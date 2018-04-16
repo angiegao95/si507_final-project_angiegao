@@ -233,7 +233,7 @@ def run_event_search():
                         print('{}. {}'.format(i, e.name))
                         print('   Date: {}'.format(e.date))
                         print('   Event Type: {}'.format(type_str))
-                        print('   Address: {}'.format(e.address))
+                        print('   Address: {}, {}, {}'.format(e.address, e.city, e.state))
                         print('   Description: {}'.format(e.desc))
                         print('')
                         i += 1
@@ -343,6 +343,7 @@ def run_event_search():
         else:
             print('Invalid command.')
             command = input('Invalid command. Please re-enter your command: ')
+    print('Bye! Have a nice day!')
 
 if __name__=="__main__":
     init_event_db(DB_FNAME)

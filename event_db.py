@@ -196,13 +196,13 @@ def search_category_event(category, search_base):
     cur = conn.cursor()
     if search_base == 'city':
         search_statement = '''
-            SELECT Name, [Date], Address, Description, Latitude, Longitude
+            SELECT Name, [Date], Address, City, [State], Description, Latitude, Longitude
             FROM Events
             WHERE City = ?
         '''
     else:
         search_statement = '''
-            SELECT Name, [Date], Address, Description, Latitude, Longitude
+            SELECT Name, [Date], Address, City, [State], Description, Latitude, Longitude
             FROM Events AS E
             	JOIN EventType AS ET ON E.Id = ET.EventId
             	JOIN Types AS T ON T.Id = ET.TypeId
@@ -228,6 +228,6 @@ def search_category_event(category, search_base):
         for t in all_types:
             event_type.append(t[0])
 
-        fetched_events.append(Event(event_type, row[0], row[1], row[3], row[2], row[4], row[5]))
+        fetched_events.append(Event(event_type, row[0], row[1], row[5], row[2], row[3], row[4], row[6], row[7]))
     conn.close()
     return fetched_events

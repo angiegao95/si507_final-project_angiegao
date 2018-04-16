@@ -1,10 +1,12 @@
 class Event():
-    def __init__(self, eventtype, name, date, desc, address, lat, lon):
+    def __init__(self, eventtype, name, date, desc, address, city, state, lat, lon):
         self.type = eventtype
         self.name = name
         self.date = date
         self.desc = desc
         self.address = address
+        self.city = city
+        self.state = state
         self.lat = lat
         self.lon = lon
 
