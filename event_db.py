@@ -94,29 +94,28 @@ def check_event_db(event_name):
 
 def insert_event_to_db(event_type, event_title, event_date, event_desc, event_address, event_city, event_state, event_lat, event_lon):
     global DB_FNAME
-    if check_event_db(event_title):
-        conn = sqlite.connect(DB_FNAME)
-        cur = conn.cursor()
+    conn = sqlite.connect(DB_FNAME)
+    cur = conn.cursor()
+    insert_statement = '''
+        INSERT INTO Events (Name, Date, City, State, Address, Description, Latitude, Longitude)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+    '''
+    params = (event_title, event_date, event_city, event_state, event_address, event_desc, event_lat, event_lon)
+    cur.execute(insert_statement, params)
+    conn.commit()
+    for t in  event_type:
         insert_statement = '''
-            INSERT INTO Events (Name, Date, City, State, Address, Description, Latitude, Longitude)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+            INSERT INTO EventType (EventId, TypeId)
+            SELECT E.Id, T.Id
+            FROM Events AS E, Types AS T
+            WHERE E.Name = ?
+                AND T.TypeName = ?
         '''
-        params = (event_title, event_date, event_city, event_state, event_address, event_desc, event_lat, event_lon)
+        params = (event_title, t)
         cur.execute(insert_statement, params)
-        conn.commit()
-        for t in  event_type:
-            insert_statement = '''
-                INSERT INTO EventType (EventId, TypeId)
-                SELECT E.Id, T.Id
-                FROM Events AS E, Types AS T
-                WHERE E.Name = ?
-                    AND T.TypeName = ?
-            '''
-            params = (event_title, t)
-            cur.execute(insert_statement, params)
 
-        conn.commit()
-        conn.close()
+    conn.commit()
+    conn.close()
 
 def check_state_db(state_abbr):
     global DB_FNAME

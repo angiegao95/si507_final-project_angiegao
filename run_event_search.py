@@ -100,29 +100,34 @@ def search_events_by_state(state_abbr):
     #Crawl the events in the state
     event_text = make_request_using_cache_crawl(state_abbr)
     event_soup = BeautifulSoup(event_text, 'html.parser')
-    event_rows = event_soup.find_all(class_='event')[:100]
+    event_rows = event_soup.find_all(class_='event')[:150]
+    month_dict = {'January':'01', 'February':'02', 'March':'03', 'April':'04','May':'05', 'June':'06', 'July':'07', 'August':'08', 'September':'09',
+        'October':'10', 'November':'11', 'December':'12'}
 
     #Get the detail information of the event
+    event_i = 0
     for row in event_rows:
         event_title = row.find('h4').text
+        if check_event_db(event_title):
+            event_date_ls = row.find(class_='date').text.replace(',',' ').split()
+            event_date = '{}-{}-{}'.format(event_date_ls[2],month_dict[event_date_ls[0]],event_date_ls[1])
 
-        event_date_ls = row.find(class_='date').text.replace(',',' ').split()
-        month_dict = {'January':'01', 'February':'02', 'March':'03', 'April':'04','May':'05', 'June':'06', 'July':'07', 'August':'08', 'September':'09',
-            'October':'10', 'November':'11', 'December':'12'}
-        event_date = '{}-{}-{}'.format(event_date_ls[2],month_dict[event_date_ls[0]],event_date_ls[1])
+            event_city = row.find(class_='city').text
+            event_state = row.find(class_='state').text
 
-        event_city = row.find(class_='city').text
-        event_state = row.find(class_='state').text
+            event_address = row.find(class_='location').text.split(',')[2].strip()
+            event_desc = row.find_all('tr')[1].find_all('td')[1].text[:-18].strip()
+            event_type = []
+            type_container = row.find(class_='vendors').find_all('li')
+            for t in type_container:
+                event_type.append(t.text)
+            event_location = search_place_location(event_address + ' '+ event_city + ' ' + event_state)
 
-        event_address = row.find(class_='location').text.split(',')[2].strip()
-        event_desc = row.find_all('tr')[1].find_all('td')[1].text[:-18].strip()
-        event_type = []
-        type_container = row.find(class_='vendors').find_all('li')
-        for t in type_container:
-            event_type.append(t.text)
-        event_location = search_place_location(event_address + ' '+ event_city + ' ' + event_state)
+            insert_event_to_db(event_type, event_title, event_date, event_desc, event_address, event_city, event_state, event_location['lat'], event_location['lng'])
+            event_i += 1
 
-        insert_event_to_db(event_type, event_title, event_date, event_desc, event_address, event_city, event_state, event_location['lat'], event_location['lng'])
+        if event_i == 100:
+            break
 
 
 def search_nearby_restaurants(event):

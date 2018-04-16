@@ -53,7 +53,7 @@ class TestDatabase(unittest.TestCase):
 
 class TestClass(unittest.TestCase):
     def test_event_class(self):
-        sample = Event(['Craft','Commercial'],'Strut Up Detroit 2018','2018-04-20','sample','Royal Oak Farmers Market', 42.489412, -83.1411249)
+        sample = Event(['Craft','Commercial'],'Strut Up Detroit 2018','2018-04-20','sample','Royal Oak Farmers Market', 'AA', 'MI', 42.489412, -83.1411249)
         self.assertEqual(sample.desc, 'sample')
         self.assertEqual(sample.lat, 42.489412)
 
@@ -65,11 +65,11 @@ class TestClass(unittest.TestCase):
     def test_parking_class(self):
         sample = ParkingStructure('P11', 'Sample Address', 0, 0)
         self.assertEqual(sample.lat, 0)
-        self.assertEqual(sample.__str__, 'P11: Sample Address')
+        self.assertEqual(sample.__str__(), 'P11: Sample Address')
 
 class TestRestaurantSearch(unittest.TestCase):
     def test_restaurant_search(self):
-        sample = Event(['Craft','Commercial'],'Strut Up Detroit 2018','2018-04-20','sample','Royal Oak Farmers Market', 42.489412, -83.1411249)
+        sample = Event(['Craft','Commercial'],'Strut Up Detroit 2018','2018-04-20','sample','Royal Oak Farmers Market', 'AA', 'MI', 42.489412, -83.1411249)
         restaurant_ls = search_nearby_restaurants(sample)
         self.assertEqual(len(restaurant_ls), 10)
         self.assertEqual(restaurant_ls[0].name, 'Hot Diggity Dog')
@@ -78,7 +78,7 @@ class TestRestaurantSearch(unittest.TestCase):
 
 class TestParkingSearch(unittest.TestCase):
     def test_parking_search(self):
-        sample = Event(['Craft','Commercial'],'Strut Up Detroit 2018','2018-04-20','sample','Royal Oak Farmers Market', '42.489412', '-83.1411249')
+        sample = Event(['Craft','Commercial'],'Strut Up Detroit 2018','2018-04-20','sample','Royal Oak Farmers Market', 'AA', 'MI', 42.489412, -83.1411249)
         restaurant_ls = search_nearby_parkings(sample)
         self.assertEqual(len(restaurant_ls), 5)
         self.assertEqual(restaurant_ls[1].name, 'Farmers Market Parking Lot P11')

@@ -73,8 +73,6 @@ def plot_state_map(state_events):
     else:
         max_range = lon_range
 
-    print(max_range)
-
     if max_range <= 0.003:
         zoom_index = 17
     elif max_range <= 0.006:
