@@ -7,8 +7,8 @@ For my final project, there are three main data sources that were used, and two 
   4. Map Visualization: Mapbox Tokens API (Access token required: https://www.mapbox.com/account/access-tokens)
 
 To successfully incorporate these data sources into the program, a secrets.py file is needed. In the file, please specify the keys with the following variable names:
-  Yelp Fusion API - yelp_fusion_key
-  Google Map API - google_places_key
+  Yelp Fusion API - yelp_fusion_key;
+  Google Map API - google_places_key;
   Mapbox Tokens API - mapbox_access_token
 
 As the program also uses plotly for the data visualization, here is the link to the 'Getting Started' page on plotly, in order to launch plotly in Python on your computer: https://plot.ly/python/getting-started/
@@ -29,6 +29,7 @@ There are three main classes used in this program:
   1. Event(): the class for each single event, containing all the important information of the event including name, date, address and others
   2. Restaurant(): the class for restaurants that nearby one target event, containing restaurant name, rate, address and location Information
   3. ParkingStructure(): the class for parking structures that nearby one target event, containing structure name and address
+
 
 
 User Guide
